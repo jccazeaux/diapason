@@ -1,4 +1,4 @@
-# Injecteur
+# Carburator
 Tiny, simple, configurable dependency injection framework
 
 # How it works
