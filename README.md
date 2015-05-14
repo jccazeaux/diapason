@@ -2,13 +2,13 @@
 Tiny, simple, configurable dependency injection framework
 
 # How it works
-Injecteur acts as an object container. You can add objets to containers. Then execute function with dependency injection.
+Carburator acts as an object container. You can add objets to containers. Then execute function with dependency injection.
 
 ## Create a container
-Injecteur comes with no container, you must create one or more
+Carburator comes with no container, you must create one or more
 
 ```Javascript
-injecteur.config
+carburator.config
 	.container("myContainer")
 	.container("myOtherContainer");
 ```
@@ -19,14 +19,14 @@ This will create the containers and the functions to add content.
 When creating a container, a function will be created to specifically add objets to that container. The name of the function will be the name of the container
 
 ```Javascript
-injecteur.myContainer("myObject", "Hello")
-injecteur.myOtherContainer("myOtherObject", "World !")
+carburator.myContainer("myObject", "Hello")
+carburator.myOtherContainer("myOtherObject", "World !")
 ```
 
 ## Dependency injection
 
 ```Javascript
-injecteur.inject(["myObject", "myOtherObject", function(myObject, myOtherObject) {
+carburator.inject(["myObject", "myOtherObject", function(myObject, myOtherObject) {
 	console.log(myObject + ", " + myOtherObject);
 }]);
 // > Hello, World !
@@ -38,13 +38,13 @@ By default, objects will be treated as singleton. You can declare them as protor
 
 ```Javascript
 // Declare as singleton (by default)
-injecteur.myContainer("myObject", function() {
+carburator.myContainer("myObject", function() {
 	return {
 		message: "Hello, World !";
 	};
 }).asSingleton();
 // Declare as prototype
-injecteur.myContainer("myObject", function() {
+carburator.myContainer("myObject", function() {
 	return {
 		message: "Hello, World !";
 	};
@@ -55,8 +55,8 @@ injecteur.myContainer("myObject", function() {
 You can choose the container wich will contain your object in the name of the injection
 
 ```javascript
-// injecteur will search only in myContainer for myObject.
-injecteur.inject(["myContainer:myObject"], function(myObject) {
+// carburator will search only in myContainer for myObject.
+carburator.inject(["myContainer:myObject"], function(myObject) {
 	console.log(myObject);
 });
 ```
@@ -68,16 +68,16 @@ The default executor executes the functions.
 
 Exemple: get the functions without executing them
 ```Javascript
-injecteur.config
+carburator.config
 	.container("functions")
 	.executor("functions", function(obj) {
 		return obj;
 	});
 
-injecteur.function("myFunction", function() {
+carburator.function("myFunction", function() {
 	console.log("Hello, World !");
 });
-injecteur.inject(["myFunction", function(myFunction) {
+carburator.inject(["myFunction", function(myFunction) {
 	myFunction();
 }]);
 ```
@@ -87,9 +87,9 @@ You can reset a container, wich means the container will no longer be available.
 
 ```Javascript
 // Reset a container
-injecteur.reset("myContainer");
+carburator.reset("myContainer");
 // Reset all
-injecteur.reset();
+carburator.reset();
 ```
 
 ## Clear
@@ -97,9 +97,9 @@ You can clear a container, wich means all objects in it will be deleted. The con
 
 ```Javascript
 // Clear a container
-injecteur.clear("myContainer");
+carburator.clear("myContainer");
 // Clear all containers
-injecteur.clear();
+carburator.clear();
 ```
 <<<<<<< HEAD
 
@@ -107,7 +107,7 @@ injecteur.clear();
 The injection function will be executed by default on null. You can specify a specific context with the second argument of the inject function
 
 ```javascript
-injecteur.inject(["myObject"], function(myObject) {
+carburator.inject(["myObject"], function(myObject) {
 	console.log(myObject);
 }, window);
 ```
@@ -116,7 +116,7 @@ injecteur.inject(["myObject"], function(myObject) {
 For some injections, you may want to add contextual dependencies. This dependencies cannot be added to a container because they must be available only for this execution. These contextual dependencies can be passed as third argument of inject function
 
 ```javascript
-injecteur.inject(["myObject", "$scope"], function(myObject, $scope) {
+carburator.inject(["myObject", "$scope"], function(myObject, $scope) {
 	console.log(myObject);
 }, window, {$scope: {id: 0}});
 ```
@@ -125,7 +125,7 @@ injecteur.inject(["myObject", "$scope"], function(myObject, $scope) {
 You can tell carburator to ignore containers on an injection with fourth parameter. This parameter is an array of ignored container names.
 
 ```javascript
-injecteur.inject(["myObject"], function(myObject) {
+carburator.inject(["myObject"], function(myObject) {
 	console.log(myObject);
 }, window, null, ["myContainer"]);
 ```
