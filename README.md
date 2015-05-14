@@ -1,4 +1,4 @@
-# Injecteur
+# Carburator
 Tiny, simple, configurable dependency injection framework
 
 # How it works
@@ -101,6 +101,7 @@ injecteur.clear("myContainer");
 // Clear all containers
 injecteur.clear();
 ```
+<<<<<<< HEAD
 
 ## Define execution context (this)
 The injection function will be executed by default on null. You can specify a specific context with the second argument of the inject function
@@ -161,3 +162,5 @@ Here is an exemple of usage. We want to have configurable services. The configur
 ```
 
 
+=======
+>>>>>>> 0a4b7aef91b23c0341c4e0c31cc29a84672929b2
