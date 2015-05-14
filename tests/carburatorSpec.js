@@ -208,4 +208,64 @@ describe("Test injection", function() {
 		
 	});
 
+	it("injects automatic dependency", function() {
+		carburator.reset();
+		carburator.config.container("configuration").container("service").container("controller").overwrites(false);
+		carburator.config.automaticDependencies("service", {"$configuration": function(name) {
+			return carburator.inject([name, function(config) {
+				return config;
+			}], null, null, ["service"]);
+		}});
+		carburator.configuration("myService", "myService config works");
+		carburator.service("myService", ["$configuration", function($configuration) {
+			return {
+				getConfig: function() {
+					return $configuration;
+				}
+			};
+		}]);
+		carburator.configuration("myOtherService", "myOtherService config works");
+		carburator.service("myOtherService", ["$configuration", function($configuration) {
+			return {
+				getConfig: function() {
+					return $configuration;
+				}
+			};
+		}]);
+		carburator.controller("myController", ["$configuration", function($configuration) {
+			return {
+				getConfig: function() {
+					return $configuration;
+				}
+			};
+		}]);
+
+
+		carburator.inject(["myService", function(injection) {
+			expect(injection.getConfig()).toBe("myService config works");
+		}]);
+		carburator.inject(["myOtherService", function(injection) {
+			expect(injection.getConfig()).toBe("myOtherService config works");
+		}]);
+		carburator.inject(["myController", function(injection) {
+			expect(injection.getConfig()).toBe(undefined);
+		}]);
+	});
+
+	it("ignores containers", function() {
+		carburator.reset();
+		carburator.config.container("configuration").container("service").container("controller").overwrites(false);
+		carburator.controller("myController", "myController");
+		carburator.service("myService", "myService");
+
+		carburator.inject(["myService", "myController", function(service, controller) {
+			expect(service).toBe("myService");
+			expect(controller).toBe(undefined);
+		}], null, null, ["controller"]);
+		carburator.inject(["myService", "myController", function(service, controller) {
+			expect(controller).toBe("myController");
+			expect(service).toBe(undefined);
+		}], null, null, ["service"]);
+	});
+
 });

@@ -101,3 +101,63 @@ injecteur.clear("myContainer");
 // Clear all containers
 injecteur.clear();
 ```
+
+## Define execution context (this)
+The injection function will be executed by default on null. You can specify a specific context with the second argument of the inject function
+
+```javascript
+injecteur.inject(["myObject"], function(myObject) {
+	console.log(myObject);
+}, window);
+```
+
+## Contextual dependencies
+For some injections, you may want to add contextual dependencies. This dependencies cannot be added to a container because they must be available only for this execution. These contextual dependencies can be passed as third argument of inject function
+
+```javascript
+injecteur.inject(["myObject", "$scope"], function(myObject, $scope) {
+	console.log(myObject);
+}, window, {$scope: {id: 0}});
+```
+
+## Ignore containers
+You can tell carburator to ignore containers on an injection with fourth parameter. This parameter is an array of ignored container names.
+
+```javascript
+injecteur.inject(["myObject"], function(myObject) {
+	console.log(myObject);
+}, window, null, ["myContainer"]);
+```
+
+## Automatic dependencies
+You can add automatic dependencies. An automatic dependency is a dependency defined in no container. It's defined
+ * on a container
+ * with a name
+ * as a function
+
+When a dependency of the container is injected, it will have all automatic dependencies configured for this container. The function will be executed with the dependency name in paramater.
+
+Here is an exemple of usage. We want to have configurable services. The configuration of the service must be stored in a specific container and injected as $configuration for the service.
+
+```javascript
+	carburator.config
+		.container("configuration")
+		.container("service");
+	// For the service container, we add a $configuration automatic dependency
+	// This $configuration dependency will be the &lt;serviceName&gt; dependency in the configuration container
+	carburator.config.automaticDependencies("service", {"$configuration": function(name) {
+		// We get the service configuration in the configuration container (ignore service container)
+		return carburator.inject([name, function(config) {
+			return config;
+		}], null, null, ["service"]);
+	}});
+	// We define the configuration
+	carburator.configuration("myService", "myService configuration is here");
+	// Then the service will receive the configuration as $configuration
+	carburator.service("myService", ["$configuration", function($configuration) {
+		console.log($configuration); // "myService configuration is here"
+	}]);
+
+```
+
+

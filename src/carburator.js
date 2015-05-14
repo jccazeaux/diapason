@@ -16,6 +16,7 @@
 	var containerNameRegExp = new RegExp("^[$A-Za-z_][0-9A-Za-z_$]*$");
 	var exports = {};
 	var containers = {};
+	var automaticDependencies = {};
 	var executors = {};
 	var overwrites = true;
 	var voidConsole = {
@@ -53,7 +54,7 @@
 			if (!overwrites && containers[injectType][name] != null) {
 				throw "Object " + name + " already exists in container " + injectType + ".";
 			}
-			containers[injectType][name] = {obj: injectionObj, scope:"singleton"};
+			containers[injectType][name] = {name:name, obj: injectionObj, scope:"singleton"};
 			return {
 				asPrototype: function() {
 					containers[injectType][name].scope = "prototype";
@@ -87,6 +88,19 @@
 	};
 
 	/**
+	 * Adds automatic dependencies for a container type. An automatic dependency is configured on a container
+	 * It's a named dependency that will be defined here. All objects in the container will have this dependency available.
+	 * It's different from contextual dependencies. Imagine you want all your services to have a $configuration wich will be 
+	 * searched in a specific container. You will use automatic dependencies for that
+	 * @param {String} containerType - type of the container
+	 * @param {Array} automaticDependencies - automatic dependency function 
+	 */
+	exports.config.automaticDependencies = function(containerType, fn) {
+		automaticDependencies[containerType] = fn;
+		return this;
+	};
+
+	/**
 	 * Toggles debug mode
 	 * @param {boolean} active
 	 */
@@ -110,12 +124,12 @@
 	/**
 	 * Executes injection
 	 */
-	exports.inject = function inject(obj, contextualDependencies, executionContext) {
+	exports.inject = function inject(obj, contextualDependencies, executionContext, ignoreContainers) {
 		if (isDependencySyntax(obj)) {
 			LOG.log("injecting array:", obj);
 			var params = [];
 			for (var i = 0 ; i < obj.length - 1 ; i++) {
-				params[i] = searchDependency(obj[i], contextualDependencies, executionContext);
+				params[i] = searchDependency(obj[i], contextualDependencies, executionContext, ignoreContainers);
 			}
 			return obj[obj.length -1].apply(executionContext, params);
 		} else if (typeof obj === "function") {
@@ -170,25 +184,30 @@
 	/**
 	 * Searches a dependency
 	 */
-	function searchDependency(name, contextualDependencies, executionContext) {
-		var container, injectionFound, containerFound;
+	function searchDependency(name, contextualDependencies, executionContext, ignoreContainers) {
+		var container, injectionFound, containerFound, injectionName;
 		LOG.log("searchDependency for " + name);
 		if (contextualDependencies != null && contextualDependencies[name] !== undefined) {
-			return injectDependency(contextualDependencies[name], "contextual", contextualDependencies, executionContext);
+			return injectDependency(name, contextualDependencies[name], "contextual", contextualDependencies, executionContext, ignoreContainers);
 		}
 		var regexp = new RegExp("(.+):(.+)");
 		var res = regexp.exec(name);
-		if (res !== null && containers[res[1]] !== undefined) {
+		if (res !== null && containers[res[1]] !== undefined && (!ignoreContainers || ignoreContainers.indexOf(res[1]) !== -1)) {
 			injectionFound = containers[res[1]][res[2]];
 			containerFound = res[1];
+			injectionName = res[2];
 		} else {
 			for (var containerType in containers) {
+				if (ignoreContainers && ignoreContainers.indexOf(containerType) !== -1) {
+					continue;
+				}
 				LOG.log("container:" + containerType);
 				container = containers[containerType];
-				for (var injectionName in container) {
+				for (var injection in container) {
 					LOG.log("injectionName:" + injectionName);
-					if (injectionName === name) {
-						injectionFound = container[injectionName];
+					if (injection === name) {
+						injectionName = name;
+						injectionFound = container[injection];
 						containerFound = containerType;
 					}
 				}
@@ -199,10 +218,10 @@
 		if (injectionFound != null) {
 			if (injectionFound.scope === "prototype") {
 				LOG.log("as prototype");
-				return injectDependency(injectionFound.obj, containerFound, contextualDependencies, executionContext);
+				return injectDependency(injectionFound.name, injectionFound.obj, containerFound, contextualDependencies, executionContext, ignoreContainers);
 			} else {
 				if (!injectionFound.instance) {
-					injectionFound.instance = injectDependency(injectionFound.obj, containerFound, contextualDependencies, executionContext);
+					injectionFound.instance = injectDependency(injectionFound.name, injectionFound.obj, containerFound, contextualDependencies, executionContext, ignoreContainers);
 				}
 				return injectionFound.instance;
 			}
@@ -237,12 +256,17 @@
 	 * @param {Object} executionContext - execution context of the injection
 	 * @param {Object} contextualDependencies - contextual dependencies
 	 */
-	function injectDependency(obj, containerType, contextualDependencies, executionContext) {
+	function injectDependency(name, obj, containerType, contextualDependencies, executionContext, ignoreContainers) {
 		if (isDependencySyntax(obj)) {
 			LOG.log("injecting array:", obj);
 			var params = [];
+			var autoDependencies = automaticDependencies[containerType];
 			for (var i = 0 ; i < obj.length - 1 ; i++) {
-				params[i] = searchDependency(obj[i], contextualDependencies, executionContext);
+				if (autoDependencies && autoDependencies[obj[i]]) {
+					params[i] = autoDependencies[obj[i]](name);
+				} else {
+					params[i] = searchDependency(obj[i], contextualDependencies, executionContext, ignoreContainers);
+				}
 			}
 			return obj[obj.length -1].apply(executionContext, params);
 		} else {
