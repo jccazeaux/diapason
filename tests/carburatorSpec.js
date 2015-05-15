@@ -14,24 +14,20 @@ describe("Test injection", function() {
 		}).toThrow();
 	});
 
-	it("Injects a controller", function() {
+	it("Injects with contextual dependency", function() {
 		carburator.reset();
 		// carburator.config.debug(true);
-		carburator.config.container("controller").container("service");
-		
-		carburator.controller("testCtrl", ["$scope", function($scope) {
-			$scope.attr = "value";
-		}]);
 
 		var scope = {};
-		carburator.inject(["testCtrl", function(testCtrl) {
-			expect(scope.attr).toBe("value");
+		carburator.inject(["$scope", function($scope) {
+			$scope.attr = "value";
 		}], {$scope:scope});
+		expect(scope.attr).toBe("value");
 	});
 
-	it("Injects a controller with a service", function() {
+	it("Injects with a service", function() {
 		carburator.reset();
-		carburator.config.container("controller").container("service");
+		carburator.config.container("service");
 		
 		carburator.service("testService", {
 			get: function() {
@@ -39,14 +35,11 @@ describe("Test injection", function() {
 			}
 		});
 
-		carburator.controller("testCtrl", ["$scope", "testService", function($scope, testService) {
-			$scope.attr = testService.get();
-		}]);
-
 		var scope = {};
-		carburator.inject(["testCtrl", function(testCtrl) {
-			expect(scope.attr).toBe("value");
+		carburator.inject(["$scope", "testService", function($scope, testService) {
+			$scope.attr = testService.get();
 		}], {$scope:scope});
+		expect(scope.attr).toBe("value");
 
 	});
 
@@ -212,9 +205,9 @@ describe("Test injection", function() {
 		carburator.reset();
 		carburator.config.container("configuration").container("service").container("controller").overwrites(false);
 		carburator.config.automaticDependencies("service", {"$configuration": function(name) {
-			return carburator.inject([name, function(config) {
+			return carburator.selectContainers(["configuration"]).inject([name, function(config) {
 				return config;
-			}], null, null, ["service"]);
+			}]);
 		}});
 		carburator.configuration("myService", "myService config works");
 		carburator.service("myService", ["$configuration", function($configuration) {
@@ -258,14 +251,14 @@ describe("Test injection", function() {
 		carburator.controller("myController", "myController");
 		carburator.service("myService", "myService");
 
-		carburator.inject(["myService", "myController", function(service, controller) {
+		carburator.selectContainers(["service"]).inject(["myService", "myController", function(service, controller) {
 			expect(service).toBe("myService");
 			expect(controller).toBe(undefined);
-		}], null, null, ["controller"]);
-		carburator.inject(["myService", "myController", function(service, controller) {
+		}]);
+		carburator.selectContainers(["controller"]).inject(["myService", "myController", function(service, controller) {
 			expect(controller).toBe("myController");
 			expect(service).toBe(undefined);
-		}], null, null, ["service"]);
+		}]);
 	});
 
 });
