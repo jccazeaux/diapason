@@ -1,3 +1,5 @@
+![Travis CI](https://travis-ci.org/jccazeaux/carburator.svg?branch=async-dependendy-injection)
+
 # Carburator
 Tiny, configurable dependency injection framework. Carburator uses `promises` to handle asynchronous dependency injections.
 
