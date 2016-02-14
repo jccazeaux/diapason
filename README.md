@@ -55,7 +55,7 @@ carburator.myContainer("b", ["a", function(a) {
 // Inject dependency
 carburator.inject(["a", function(a) {
 	// Enters here only when injections are ready
-	console.log(asyncDep); // Hello World !
+	console.log(a); // Hello World !
 }]);
 ```
 
