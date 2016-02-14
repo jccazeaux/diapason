@@ -1,5 +1,53 @@
 "use strict";
 
+//Default promise is ES6
+var $promise = window.Promise;
+
+var promiseAdapters = {
+	"ES": function () {
+		return {
+			resolve: function(value) {
+				return Promise.resolve(value)
+			},
+			reject: function(value) {
+				return Promise.reject(value)
+			},
+			all: function(value) {
+				return Promise.all(value)
+			},
+			thenAlias: "then"
+		};
+	},
+	"Q": function() {
+		return {
+			resolve: Q,
+			reject: function(value) {
+				return Q().then(function() {
+					throw value;
+				});
+			},
+			all: function(value) {
+				return Q.all(value)
+			},
+			thenAlias: "then"
+		};
+	},
+	"bluebird": function() {
+		return {
+			resolve: function(value) {
+				return Promise.resolve(value)
+			},
+			reject: function(value) {
+				return Promise.reject(value)
+			},
+			all: function(value) {
+				return Promise.all(value)
+			},
+			thenAlias: "then"
+		};
+	}
+};
+
 var containerNameRegExp = new RegExp("^[$A-Za-z_][0-9A-Za-z_$]*$");
 var publicAPI = {};
 var containers = {};
@@ -54,6 +102,30 @@ function createFnInjection(injectType) {
 }
 
 publicAPI.config = {};
+
+/**
+ * Use a promise framework
+ * @param {String} name Name of promise framework used 
+ */
+publicAPI.config.usePromise = function(name) {
+	if (promiseAdapters[name]) {
+		$promise = promiseAdapters[name]();
+	} else {
+		throw "Unknown promise adapter : " + name;
+	}
+};
+
+/**
+ * Configures a new promise adapter
+ * @param {String} name Name of promise framework to adapt
+ * @param {Object} Object containing the resolve, reject and all functions. 
+ */
+publicAPI.config.promiseAdapter = function(name, obj) {
+	promiseAdapters[name] = function() {
+		return obj;
+	};
+};
+
 
 /**
  * Adds a new container. Will create a function with containerType name. This function will add new dependencies in the container
@@ -154,21 +226,21 @@ function inject(obj, contextualDependencies, executionContext, selectedContainer
 
 		for (var i = 0 ; i < obj.length - 1 ; i++) {
 			if (contextualDependencies != null && contextualDependencies[obj[i]] !== undefined) {
-				deferedParams[i] = Promise.resolve(contextualDependencies[obj[i]]);
+				deferedParams[i] = $promise.resolve(contextualDependencies[obj[i]]);
 			} else {
 				deferedParams[i] = searchDependency(obj[i], selectedContainers);
 			}
 		}
-		return Promise.all(deferedParams)
-		.then(function(params) {
+		return $promise.all(deferedParams)
+		[$promise.thenAlias](function(params) {
 			return obj[obj.length -1].apply(executionContext, params);
 		});
 	} else if (typeof obj === "function") {
 		LOG.log("injecting function:", obj);
-		return Promise.resovle(obj.call(executionContext));
+		return $promise.resovle(obj.call(executionContext));
 	} else {
 		LOG.log("injecting obj:", obj);
-		return Promise.resolve(obj);
+		return $promise.resolve(obj);
 	}
 }
 
@@ -256,15 +328,15 @@ function searchDependency(name, selectedContainers) {
 		} else {
 			if (!injectionFound.instance) {
 				return injectDependency(injectionFound.name, injectionFound.obj, containerFound, selectedContainers)
-				.then(function(res) {
+				[$promise.thenAlias](function(res) {
 					injectionFound.instance = res;
 					return res;
 				});
 			}
-			return Promise.resolve(injectionFound.instance);
+			return $promise.resolve(injectionFound.instance);
 		}
 	} else {
-		return Promise.reject("Injection " + name + " doesn't exist");
+		return $promise.reject("Injection " + name + " doesn't exist");
 	}
 }
 
@@ -301,18 +373,18 @@ function injectDependency(name, obj, containerType, selectedContainers) {
 		var autoDependencies = automaticDependencies[containerType];
 		for (var i = 0 ; i < obj.length - 1 ; i++) {
 			if (autoDependencies && autoDependencies[obj[i]]) {
-				deferedParams[i] = Promise.resolve(autoDependencies[obj[i]](name));
+				deferedParams[i] = $promise.resolve(autoDependencies[obj[i]](name));
 			} else {
 				deferedParams[i] = searchDependency(obj[i], selectedContainers);
 			}
 		}
-		return Promise.all(deferedParams)
-		.then(function(params) {
+		return $promise.all(deferedParams)
+		[$promise.thenAlias](function(params) {
 			return obj[obj.length -1].apply(null, params);
 		});
 	} else {
 		var executor = executors[containerType] || defaultExecutor;
-		return Promise.resolve(executor(obj));
+		return $promise.resolve(executor(obj));
 	}
 }
 

@@ -38,7 +38,7 @@ describe("Test injection", function() {
 		});
 	});
 
-	it("Injects as singleton", function() {	
+	it("Injects as singleton", function(done) {	
 		carburator.config.container("controller").container("service");
 		
 		carburator.service("testService", function() {
@@ -57,29 +57,47 @@ describe("Test injection", function() {
 		var scope = {};
 		// test service injection
 		carburator.inject(["testCtrl", function(testCtrl) {
-		}]);
+		}]).then(function() {
+			return carburator.inject(["testService", function(testService) {
+				Should(testService.attr).be.exactly("new value");
+			}]);
+		})
+		.then(done);
 
-		carburator.inject(["testService", function(testService) {
-			Should(testService.attr).be.exactly("new value");
-		}]);
 	});
 
 	it("Injects asynchronous injections", function(done) {
 		carburator.config.container("service");
-		
-		carburator.service("testService", Promise.resolve({
-			get: function() {
-				return "value";
-			}
-		})).asSingleton();
-
-		carburator.service("facadeService", ["testService", function(testService) {
-			return Promise.resolve({
+		if (window.Promise) {
+			carburator.service("testService", Promise.resolve({
 				get: function() {
-					return testService.get() + " !!!";
+					return "value";
 				}
-			});
-		}]).asSingleton();
+			})).asSingleton();
+
+			carburator.service("facadeService", ["testService", function(testService) {
+				return Promise.resolve({
+					get: function() {
+						return testService.get() + " !!!";
+					}
+				});
+			}]).asSingleton();
+
+		} else if (window.Q) {
+			carburator.service("testService", Q({
+				get: function() {
+					return "value";
+				}
+			})).asSingleton();
+
+			carburator.service("facadeService", ["testService", function(testService) {
+				return Q({
+					get: function() {
+						return testService.get() + " !!!";
+					}
+				});
+			}]).asSingleton();
+		}
 		
 		carburator.inject(["facadeService", function(facadeService) {
 			Should(facadeService.get()).be.exactly("value !!!");
@@ -87,7 +105,7 @@ describe("Test injection", function() {
 		}]);
 	});
 
-	it("Injects as prototype", function() {	
+	it("Injects as prototype", function(done) {	
 		carburator.config.container("controller").container("service");
 		
 		carburator.service("testService", function() {
@@ -106,10 +124,13 @@ describe("Test injection", function() {
 		var scope = {};
 		// test service injection
 		carburator.inject(["testCtrl", function(testCtrl) {
-		}]);
-		carburator.inject(["testService", function(testService) {
-			Should(testService.attr).be.exactly("value");
-		}]);
+		}])
+		.then(function() {
+			return carburator.inject(["testService", function(testService) {
+				Should(testService.attr).be.exactly("value");
+			}]);
+		})
+		.then(done);
 	});
 
 
