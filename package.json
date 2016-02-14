@@ -1,8 +1,22 @@
 {
   "name": "carburator",
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "main": "./dist/carburator.min.js",
+  "license": "MIT",
   "devDependencies": {
-    "grunt": "~0.4.2",
-    "grunt-contrib-jasmine": "^0.8.2"
+    "webpack": "^1.12.13",
+    "babel-core": "^6.4.5",
+    "babel-loader": "^6.2.2",
+    "mocha": "^2.4.5",
+    "should": "^8.2.1",
+    "sinon": "^1.17.3",
+    "mocha-phantomjs": "^4.0.2",
+    "babel-polyfill": "^6.5.0",
+    "q": "^1.4.1",
+    "bluebird": "^3.3.1"
+  },
+  "scripts": {
+    "test": "mocha-phantomjs specs/runnerQ.html && mocha-phantomjs specs/runnerBluebird.html && mocha-phantomjs specs/runnerES6.html",
+    "build": "webpack"
   }
 }

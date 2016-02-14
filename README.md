@@ -1,5 +1,13 @@
+![Travis CI](https://travis-ci.org/jccazeaux/carburator.svg?branch=async-dependendy-injection)
+
 # Carburator
-Tiny, simple, configurable dependency injection framework
+Tiny, configurable dependency injection framework. Carburator uses `promises` to handle asynchronous dependency injections.
+
+# Installation
+
+* Download the [latest release](https://github.com/jccazeaux/carburator/releases/download/v0.2.1/carburator.min.js).
+* Clone the repo: `git clone https://github.com/jccazeaux/carburator.git`.
+* Install with npm: `npm install carburator`.
 
 # How it works
 Carburator acts as an object container. You can add objets to containers. Then execute function with dependency injection.
@@ -31,6 +39,81 @@ carburator.inject(["myObject", "myOtherObject", function(myObject, myOtherObject
 }]);
 // > Hello, World !
 ```
+
+# Asynchronous mecanism
+## What does that mean
+It means any injection may be a promise. Carburator will wait recursively all dependencies to be be resolved before calling the injection functions.
+
+```Javascript
+// Create an async dependency
+carburator.myContainer("a", Promise.resolve("Hello World"));
+// Create an other async dependency that needs a
+carburator.myContainer("b", ["a", function(a) {
+	// When injected, will wait for a to be ready
+	return Promise.resolve(a + " !");
+}]);
+// Inject dependency
+carburator.inject(["a", function(a) {
+	// Enters here only when injections are ready
+	console.log(asyncDep); // Hello World !
+}]);
+```
+
+## Promises API
+Carburator supports 3 Promises frameworks
+* Ecmascript 2016 (default)
+* [Q](http://documentup.com/kriskowal/q/)
+* [Bluebird](http://bluebirdjs.com/)
+
+**Carburator does not include any Promise framework, you must add the one you want (or use ES2016 if your browser supports it)**
+
+## Switch promise framework
+To switch `Promise` framework in carburator 
+```Javascript
+carburator.config.usePromise("ES");
+carburator.config.usePromise("Q");
+carburator.config.usePromise("bluebird");
+```
+
+## Configure an other promise framework
+Carburator can be adapted to work on any other `Promise` framework. To add a new one use `config.promiseAdapter` function. This function must return an object to define 4 elements
+* `resolve(value)`: function to create a `Promise` that is resolved with given value
+* `reject(value)`: function to create a `Promise` that is rejected with given value
+* `all(iterable)`: function that will wait for more than one promise
+* `thenAlias`: Alias for `then` function
+
+As examples, `Q` and `bluebird` adapters are defined like this in carburator
+```Javascript
+carburator.config.promiseAdapter("Q", function() {
+	return {
+		resolve: Q,
+		reject: function(value) {
+			return Q().then(function() {
+				throw value;
+			});
+		},
+		all: function(value) {
+			return Q.all(value)
+		},
+		thenAlias: "then"
+	};
+});
+carburator.config.promiseAdapter("bluebird", function() {
+	return {
+		resolve: function(value) {
+			return Promise.resolve(value)
+		},
+		reject: function(value) {
+			return Promise.reject(value)
+		},
+		all: function(value) {
+			return Promise.all(value)
+		},
+		thenAlias: "then"
+	};
+});
+```
+
 
 # Other capabilities
 ## Declaring an object as singleton or prototype
@@ -101,7 +184,6 @@ carburator.clear("myContainer");
 // Clear all containers
 carburator.clear();
 ```
-<<<<<<< HEAD
 
 ## Define execution context (this)
 The injection function will be executed by default on null. You can specify a specific context with the second argument of the inject function
@@ -160,7 +242,3 @@ Here is an exemple of usage. We want to have configurable services. The configur
 	}]);
 
 ```
-
-
-=======
->>>>>>> 0a4b7aef91b23c0341c4e0c31cc29a84672929b2
