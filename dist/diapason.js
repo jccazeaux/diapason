@@ -1,5 +1,5 @@
 /*!
- * carburator - 0.2.0 https://github.com/jccazeaux/carburator
+ * diapason - 0.2.0 https://github.com/jccazeaux/diapason
  *  Copyright (c) 2015 Jean-Christophe Cazeaux.
  *  Licensed under the MIT license.
  * 
@@ -10,9 +10,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
 	else if(typeof exports === 'object')
-		exports["carburator"] = factory();
+		exports["diapason"] = factory();
 	else
-		root["carburator"] = factory();
+		root["diapason"] = factory();
 })(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -192,7 +192,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * Adds a new container. Will create a function with containerType name. This function will add new dependencies in the container
 	 * @param {String} containerType - type of the new container
-	 * @return carburator.config - fluent style
+	 * @return diapason.config - fluent style
 	 */
 	publicAPI.config.container = function (containerType) {
 		publicAPI[containerType] = createFnInjection(containerType);
@@ -204,7 +204,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Adds an executor for a container type
 	 * @param {String} containerType - type of the container
 	 * @param {Function} executorFn - Executor function. Will take 2 parameters: the object to execute and the execution context (this)
-	 * @return carburator.config - fluent style
+	 * @return diapason.config - fluent style
 	 */
 	publicAPI.config.executor = function (containerType, executorFn) {
 		executors[containerType] = executorFn;
@@ -218,7 +218,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * searched in a specific container. You will use automatic dependencies for that
 	 * @param {String} containerType - type of the container
 	 * @param {Array} automaticDependencies - automatic dependency function 
-	 * @return carburator.config - fluent style
+	 * @return diapason.config - fluent style
 	 */
 	publicAPI.config.automaticDependencies = function (containerType, fn) {
 		automaticDependencies[containerType] = fn;
@@ -228,7 +228,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * Toggles debug mode
 	 * @param {boolean} active
-	 * @return carburator.config - fluent style
+	 * @return diapason.config - fluent style
 	 */
 	publicAPI.config.debug = function (active) {
 		if (active) {
@@ -242,7 +242,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * Toggles debug mode
 	 * @param {boolean} active
-	 * @return carburator.config - fluent style
+	 * @return diapason.config - fluent style
 	 */
 	publicAPI.config.overwrites = function (active) {
 		overwrites = active;
@@ -308,7 +308,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * Reset : will remove a complete container, including its injection function
 	 * @param {String} containerToClear - Container name to reset
-	 * @return Carburator - fluent style
+	 * @return diapason - fluent style
 	 */
 	publicAPI.reset = function (containerToClear) {
 		if (containerToClear === undefined) {
@@ -332,7 +332,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * clear : will clear a container
 	 * @param {String} containerToClear - Container name to reset
-	 * @return Carburator - fluent style
+	 * @return diapason - fluent style
 	 */
 	publicAPI.clear = function (containerToClear) {
 		if (containerToClear === undefined) {

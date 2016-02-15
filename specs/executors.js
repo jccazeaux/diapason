@@ -1,12 +1,12 @@
 describe("Executors", function() {
 
 	beforeEach(function() {
-		carburator.reset();
+		diapason.reset();
 	});
 
 
 	it("Runs custom executor", function(done) {
-		carburator.config.container("controller")
+		diapason.config.container("controller")
 			.container("service")
 			.executor("controller", function(obj) {
 			if (obj === "foo") {
@@ -14,10 +14,10 @@ describe("Executors", function() {
 			}
 		});
 		
-		carburator.controller("ctrl", "foo");
-		carburator.service("srvc", "bar");
+		diapason.controller("ctrl", "foo");
+		diapason.service("srvc", "bar");
 
-		carburator.inject(["ctrl", "srvc", function(ctrl, srvc) {
+		diapason.inject(["ctrl", "srvc", function(ctrl, srvc) {
 			Should(ctrl).be.exactly("foo executed !");
 			Should(srvc).be.exactly("bar");
 			done();

@@ -1,32 +1,32 @@
 describe("Containers", function() {
 
 	beforeEach(function() {
-		carburator.reset();
+		diapason.reset();
 	});
 
 	it("Rejects container with wrong name", function() {
 		Should(function() {
-			carburator.config.container("wrong integerName");
+			diapason.config.container("wrong integerName");
 		}).throw();
 	});
 
 	it("Rejects container with same name", function() {
-		carburator.config.container("myContainer");
+		diapason.config.container("myContainer");
 		Should(function() {
-			carburator.config.container("myContainer");
+			diapason.config.container("myContainer");
 		}).throw();
 	});
 
 	it("Clears one type", function(done) {
-		carburator.config.container("controller").container("service");
+		diapason.config.container("controller").container("service");
 		
-		carburator.controller("ctrl", "foo");
-		carburator.service("srvc", "bar");
-		carburator.clear("controller");
+		diapason.controller("ctrl", "foo");
+		diapason.service("srvc", "bar");
+		diapason.clear("controller");
 
-		carburator.inject(["srvc", function(srvc) {
+		diapason.inject(["srvc", function(srvc) {
 			Should(srvc).be.exactly("bar");
-			return carburator.inject(["ctrl", function(ctrl) {
+			return diapason.inject(["ctrl", function(ctrl) {
 			}]);
 		}])
 		.catch(function(err) {
@@ -36,17 +36,17 @@ describe("Containers", function() {
 	});
 
 	it("Clears all types", function(done) {
-		carburator.config.container("controller").container("service");
+		diapason.config.container("controller").container("service");
 		
-		carburator.controller("ctrl", "foo");
-		carburator.service("srvc", "bar");
-		carburator.clear();
+		diapason.controller("ctrl", "foo");
+		diapason.service("srvc", "bar");
+		diapason.clear();
 
-		carburator.inject(["ctrl", function(ctrl) {
+		diapason.inject(["ctrl", function(ctrl) {
 		}])
 		.catch(function(err) {
 			Should(err).be.exactly("Injection ctrl doesn't exist");		
-			return carburator.inject(["srvc", function(srvc) {
+			return diapason.inject(["srvc", function(srvc) {
 			}]);
 		})
 		.catch(function(err) {
@@ -56,19 +56,19 @@ describe("Containers", function() {
 	});
 
 	it("Resets one type", function(done) {
-		carburator.config.container("controller").container("service");
+		diapason.config.container("controller").container("service");
 		
-		carburator.controller("ctrl", "foo");
-		carburator.service("srvc", "bar");
-		carburator.reset("controller");
+		diapason.controller("ctrl", "foo");
+		diapason.service("srvc", "bar");
+		diapason.reset("controller");
 
-		Should(carburator.controller).be.exactly(undefined);
+		Should(diapason.controller).be.exactly(undefined);
 
-		carburator.inject(["srvc", function(srvc) {
+		diapason.inject(["srvc", function(srvc) {
 			Should(srvc).be.exactly("bar");
 		}])
 		.then(function() {
-			return carburator.inject(["ctrl", function(ctrl) {
+			return diapason.inject(["ctrl", function(ctrl) {
 			}]);
 		})
 		.catch(function(err) {
@@ -79,17 +79,17 @@ describe("Containers", function() {
 	});
 
 	it("Resets all types", function(done) {
-		carburator.config.container("controller").container("service");
+		diapason.config.container("controller").container("service");
 		
-		carburator.controller("ctrl", "foo");
-		carburator.service("srvc", "bar");
+		diapason.controller("ctrl", "foo");
+		diapason.service("srvc", "bar");
 
-		carburator.reset();
+		diapason.reset();
 
-		Should(carburator.controller).be.exactly(undefined);
-		Should(carburator.service).be.exactly(undefined);
+		Should(diapason.controller).be.exactly(undefined);
+		Should(diapason.service).be.exactly(undefined);
 
-		carburator.inject(["ctrl", "srvc", function(ctrl, srvc) {
+		diapason.inject(["ctrl", "srvc", function(ctrl, srvc) {
 		}])
 		.catch(function(err) {
 			Should(err).be.exactly("Injection ctrl doesn't exist");
@@ -98,25 +98,25 @@ describe("Containers", function() {
 	});
 
 	it("Cannot overwrite", function() {
-		carburator.config.container("controller").overwrites(false);
+		diapason.config.container("controller").overwrites(false);
 		
 		Should(function() {
-			carburator.controller("ctrl", "foo");
-			carburator.controller("ctrl", "foo");
+			diapason.controller("ctrl", "foo");
+			diapason.controller("ctrl", "foo");
 		}).throw();
 		
 	});
 
 	it("Founds specific injection", function(done) {
-		carburator.config.container("controller").container("service").overwrites(false);
-		carburator.controller("injection", "foo");
-		carburator.service("injection", "bar");
+		diapason.config.container("controller").container("service").overwrites(false);
+		diapason.controller("injection", "foo");
+		diapason.service("injection", "bar");
 
-		carburator.inject(["controller:injection", function(injection) {
+		diapason.inject(["controller:injection", function(injection) {
 			Should(injection).be.exactly("foo");
 		}])
 		.then(function() {
-			return carburator.inject(["service:injection", function(injection) {
+			return diapason.inject(["service:injection", function(injection) {
 				Should(injection).be.exactly("bar");
 			}]);
 		})
@@ -126,15 +126,15 @@ describe("Containers", function() {
 
 
 	it("ignores containers", function(done) {
-		carburator.config.container("configuration").container("service").container("controller").overwrites(false);
-		carburator.controller("myController", "myController");
-		carburator.service("myService", "myService");
+		diapason.config.container("configuration").container("service").container("controller").overwrites(false);
+		diapason.controller("myController", "myController");
+		diapason.service("myService", "myService");
 
-		carburator.selectContainers(["service"]).inject(["myService", function(service) {
+		diapason.selectContainers(["service"]).inject(["myService", function(service) {
 			Should(service).be.exactly("myService");
 		}])
 		.then(function() {
-			return carburator.selectContainers(["service"]).inject(["myController", function() {
+			return diapason.selectContainers(["service"]).inject(["myController", function() {
 				Should().fail();
 			}])
 			.catch(function(err) {

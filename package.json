@@ -1,7 +1,7 @@
 {
-  "name": "carburator",
-  "version": "0.2.0",
-  "main": "./dist/carburator.min.js",
+  "name": "diapason",
+  "version": "0.3.0",
+  "main": "./dist/diapason.min.js",
   "license": "MIT",
   "devDependencies": {
     "webpack": "^1.12.13",

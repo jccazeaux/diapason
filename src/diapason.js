@@ -130,7 +130,7 @@ publicAPI.config.promiseAdapter = function(name, obj) {
 /**
  * Adds a new container. Will create a function with containerType name. This function will add new dependencies in the container
  * @param {String} containerType - type of the new container
- * @return carburator.config - fluent style
+ * @return diapason.config - fluent style
  */
 publicAPI.config.container = function(containerType) {
 	publicAPI[containerType] = createFnInjection(containerType);
@@ -142,7 +142,7 @@ publicAPI.config.container = function(containerType) {
  * Adds an executor for a container type
  * @param {String} containerType - type of the container
  * @param {Function} executorFn - Executor function. Will take 2 parameters: the object to execute and the execution context (this)
- * @return carburator.config - fluent style
+ * @return diapason.config - fluent style
  */
 publicAPI.config.executor = function(containerType, executorFn) {
 	executors[containerType] = executorFn;
@@ -156,7 +156,7 @@ publicAPI.config.executor = function(containerType, executorFn) {
  * searched in a specific container. You will use automatic dependencies for that
  * @param {String} containerType - type of the container
  * @param {Array} automaticDependencies - automatic dependency function 
- * @return carburator.config - fluent style
+ * @return diapason.config - fluent style
  */
 publicAPI.config.automaticDependencies = function(containerType, fn) {
 	automaticDependencies[containerType] = fn;
@@ -166,7 +166,7 @@ publicAPI.config.automaticDependencies = function(containerType, fn) {
 /**
  * Toggles debug mode
  * @param {boolean} active
- * @return carburator.config - fluent style
+ * @return diapason.config - fluent style
  */
 publicAPI.config.debug = function(active) {
 	if (active) {
@@ -180,7 +180,7 @@ publicAPI.config.debug = function(active) {
 /**
  * Toggles debug mode
  * @param {boolean} active
- * @return carburator.config - fluent style
+ * @return diapason.config - fluent style
  */
 publicAPI.config.overwrites = function(active) {
 	overwrites = active;
@@ -247,7 +247,7 @@ function inject(obj, contextualDependencies, executionContext, selectedContainer
 /**
  * Reset : will remove a complete container, including its injection function
  * @param {String} containerToClear - Container name to reset
- * @return Carburator - fluent style
+ * @return diapason - fluent style
  */
 publicAPI.reset = function(containerToClear) {
 	if (containerToClear === undefined) {
@@ -271,7 +271,7 @@ publicAPI.reset = function(containerToClear) {
 /**
  * clear : will clear a container
  * @param {String} containerToClear - Container name to reset
- * @return Carburator - fluent style
+ * @return diapason - fluent style
  */
 publicAPI.clear = function(containerToClear) {
 	if (containerToClear === undefined) {

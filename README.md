@@ -1,22 +1,22 @@
-![Travis CI](https://travis-ci.org/jccazeaux/carburator.svg?branch=master)
+![Travis CI](https://travis-ci.org/jccazeaux/diapason.svg?branch=master)
 
-# Carburator
-Tiny, configurable dependency injection framework. Carburator uses `promises` to handle asynchronous dependency injections.
+# Diapason
+Tiny, configurable dependency injection framework. Diapason uses `promises` to handle asynchronous dependency injections.
 
 # Installation
 
-* Download the [latest release](https://github.com/jccazeaux/carburator/releases/download/v0.2.1/carburator.min.js).
-* Clone the repo: `git clone https://github.com/jccazeaux/carburator.git`.
-* Install with npm: `npm install carburator`.
+* Download the [latest release](https://github.com/jccazeaux/diapason/releases/download/v0.2.1/diapason.min.js).
+* Clone the repo: `git clone https://github.com/jccazeaux/diapason.git`.
+* Install with npm: `npm install diapason`.
 
 # How it works
-Carburator acts as an object container. You can add objets to containers. Then execute function with dependency injection.
+Diapason acts as an object container. You can add objets to containers. Then execute function with dependency injection.
 
 ## Create a container
-Carburator comes with no container, you must create one or more
+Diapason comes with no container, you must create one or more
 
 ```Javascript
-carburator.config
+diapason.config
 	.container("myContainer")
 	.container("myOtherContainer");
 ```
@@ -27,14 +27,14 @@ This will create the containers and the functions to add content.
 When creating a container, a function will be created to specifically add objets to that container. The name of the function will be the name of the container
 
 ```Javascript
-carburator.myContainer("myObject", "Hello")
-carburator.myOtherContainer("myOtherObject", "World !")
+diapason.myContainer("myObject", "Hello")
+diapason.myOtherContainer("myOtherObject", "World !")
 ```
 
 ## Dependency injection
 
 ```Javascript
-carburator.inject(["myObject", "myOtherObject", function(myObject, myOtherObject) {
+diapason.inject(["myObject", "myOtherObject", function(myObject, myOtherObject) {
 	console.log(myObject + ", " + myOtherObject);
 }]);
 // > Hello, World !
@@ -42,49 +42,49 @@ carburator.inject(["myObject", "myOtherObject", function(myObject, myOtherObject
 
 # Asynchronous mecanism
 ## What does that mean
-It means any injection may be a promise. Carburator will wait recursively all dependencies to be be resolved before calling the injection functions.
+It means any injection may be a promise. Diapason will wait recursively all dependencies to be be resolved before calling the injection functions.
 
 ```Javascript
 // Create an async dependency
-carburator.myContainer("a", Promise.resolve("Hello World"));
+diapason.myContainer("a", Promise.resolve("Hello World"));
 // Create an other async dependency that needs a
-carburator.myContainer("b", ["a", function(a) {
+diapason.myContainer("b", ["a", function(a) {
 	// When injected, will wait for a to be ready
 	return Promise.resolve(a + " !");
 }]);
 // Inject dependency
-carburator.inject(["a", function(a) {
+diapason.inject(["a", function(a) {
 	// Enters here only when injections are ready
 	console.log(a); // Hello World !
 }]);
 ```
 
 ## Promises API
-Carburator supports 3 Promises frameworks
+Diapason supports 3 Promises frameworks
 * Ecmascript 2016 (default)
 * [Q](http://documentup.com/kriskowal/q/)
 * [Bluebird](http://bluebirdjs.com/)
 
-**Carburator does not include any Promise framework, you must add the one you want (or use ES2016 if your browser supports it)**
+**Diapason does not include any Promise framework, you must add the one you want (or use ES2016 if your browser supports it)**
 
 ## Switch promise framework
-To switch `Promise` framework in carburator 
+To switch `Promise` framework in diapason 
 ```Javascript
-carburator.config.usePromise("ES");
-carburator.config.usePromise("Q");
-carburator.config.usePromise("bluebird");
+diapason.config.usePromise("ES");
+diapason.config.usePromise("Q");
+diapason.config.usePromise("bluebird");
 ```
 
 ## Configure an other promise framework
-Carburator can be adapted to work on any other `Promise` framework. To add a new one use `config.promiseAdapter` function. This function must return an object to define 4 elements
+Diapason can be adapted to work on any other `Promise` framework. To add a new one use `config.promiseAdapter` function. This function must return an object to define 4 elements
 * `resolve(value)`: function to create a `Promise` that is resolved with given value
 * `reject(value)`: function to create a `Promise` that is rejected with given value
 * `all(iterable)`: function that will wait for more than one promise
 * `thenAlias`: Alias for `then` function
 
-As examples, `Q` and `bluebird` adapters are defined like this in carburator
+As examples, `Q` and `bluebird` adapters are defined like this in diapason
 ```Javascript
-carburator.config.promiseAdapter("Q", function() {
+diapason.config.promiseAdapter("Q", function() {
 	return {
 		resolve: Q,
 		reject: function(value) {
@@ -98,7 +98,7 @@ carburator.config.promiseAdapter("Q", function() {
 		thenAlias: "then"
 	};
 });
-carburator.config.promiseAdapter("bluebird", function() {
+diapason.config.promiseAdapter("bluebird", function() {
 	return {
 		resolve: function(value) {
 			return Promise.resolve(value)
@@ -121,13 +121,13 @@ By default, objects will be treated as singleton. You can declare them as protor
 
 ```Javascript
 // Declare as singleton (by default)
-carburator.myContainer("myObject", function() {
+diapason.myContainer("myObject", function() {
 	return {
 		message: "Hello, World !";
 	};
 }).asSingleton();
 // Declare as prototype
-carburator.myContainer("myObject", function() {
+diapason.myContainer("myObject", function() {
 	return {
 		message: "Hello, World !";
 	};
@@ -138,8 +138,8 @@ carburator.myContainer("myObject", function() {
 You can choose the container wich will contain your object in the name of the injection
 
 ```javascript
-// carburator will search only in myContainer for myObject.
-carburator.inject(["myContainer:myObject"], function(myObject) {
+// diapason will search only in myContainer for myObject.
+diapason.inject(["myContainer:myObject"], function(myObject) {
 	console.log(myObject);
 });
 ```
@@ -151,16 +151,16 @@ The default executor executes the functions.
 
 Exemple: get the functions without executing them
 ```Javascript
-carburator.config
+diapason.config
 	.container("functions")
 	.executor("functions", function(obj) {
 		return obj;
 	});
 
-carburator.function("myFunction", function() {
+diapason.function("myFunction", function() {
 	console.log("Hello, World !");
 });
-carburator.inject(["myFunction", function(myFunction) {
+diapason.inject(["myFunction", function(myFunction) {
 	myFunction();
 }]);
 ```
@@ -170,9 +170,9 @@ You can reset a container, wich means the container will no longer be available.
 
 ```Javascript
 // Reset a container
-carburator.reset("myContainer");
+diapason.reset("myContainer");
 // Reset all
-carburator.reset();
+diapason.reset();
 ```
 
 ## Clear
@@ -180,16 +180,16 @@ You can clear a container, wich means all objects in it will be deleted. The con
 
 ```Javascript
 // Clear a container
-carburator.clear("myContainer");
+diapason.clear("myContainer");
 // Clear all containers
-carburator.clear();
+diapason.clear();
 ```
 
 ## Define execution context (this)
 The injection function will be executed by default on null. You can specify a specific context with the second argument of the inject function
 
 ```javascript
-carburator.inject(["myObject"], function(myObject) {
+diapason.inject(["myObject"], function(myObject) {
 	console.log(myObject);
 }, window);
 ```
@@ -198,16 +198,16 @@ carburator.inject(["myObject"], function(myObject) {
 For some injections, you may want to add contextual dependencies. This dependencies cannot be added to a container because they must be available only for this execution. These contextual dependencies can be passed as third argument of inject function
 
 ```javascript
-carburator.inject(["myObject", "$scope"], function(myObject, $scope) {
+diapason.inject(["myObject", "$scope"], function(myObject, $scope) {
 	console.log(myObject);
 }, window, {$scope: {id: 0}});
 ```
 
 ## Ignore containers
-You can tell carburator to ignore containers on an injection with fourth parameter. This parameter is an array of ignored container names.
+You can tell diapason to ignore containers on an injection with fourth parameter. This parameter is an array of ignored container names.
 
 ```javascript
-carburator.inject(["myObject"], function(myObject) {
+diapason.inject(["myObject"], function(myObject) {
 	console.log(myObject);
 }, window, null, ["myContainer"]);
 ```
@@ -223,21 +223,21 @@ When a dependency of the container is injected, it will have all automatic depen
 Here is an exemple of usage. We want to have configurable services. The configuration of the service must be stored in a specific container and injected as $configuration for the service.
 
 ```javascript
-	carburator.config
+	diapason.config
 		.container("configuration")
 		.container("service");
 	// For the service container, we add a $configuration automatic dependency
 	// This $configuration dependency will be the &lt;serviceName&gt; dependency in the configuration container
-	carburator.config.automaticDependencies("service", {"$configuration": function(name) {
+	diapason.config.automaticDependencies("service", {"$configuration": function(name) {
 		// We get the service configuration in the configuration container (ignore service container)
-		return carburator.inject([name, function(config) {
+		return diapason.inject([name, function(config) {
 			return config;
 		}], null, null, ["service"]);
 	}});
 	// We define the configuration
-	carburator.configuration("myService", "myService configuration is here");
+	diapason.configuration("myService", "myService configuration is here");
 	// Then the service will receive the configuration as $configuration
-	carburator.service("myService", ["$configuration", function($configuration) {
+	diapason.service("myService", ["$configuration", function($configuration) {
 		console.log($configuration); // "myService configuration is here"
 	}]);
 
