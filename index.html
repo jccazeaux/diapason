@@ -23,41 +23,41 @@
         </header>
 
         <section id="downloads" class="clearfix">
-          <a href="https://github.com/jccazeaux/carburator/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-          <a href="https://github.com/jccazeaux/carburator/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-          <a href="https://github.com/jccazeaux/carburator" id="view-on-github" class="button"><span>View on GitHub</span></a>
+          <a href="https://github.com/jccazeaux/diapason/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/jccazeaux/diapason/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/jccazeaux/diapason" id="view-on-github" class="button"><span>View on GitHub</span></a>
         </section>
 
         <hr>
 
         <section id="main_content">
-          <p><img src="https://travis-ci.org/jccazeaux/carburator.svg?branch=master" alt="Travis CI"></p>
+          <p><img src="https://travis-ci.org/jccazeaux/diapason.svg?branch=master" alt="Travis CI"></p>
 
 <h1>
-<a id="carburator" class="anchor" href="#carburator" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Carburator</h1>
+<a id="diapason" class="anchor" href="#diapason" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Diapason</h1>
 
-<p>Tiny, configurable dependency injection framework. Carburator uses <code>promises</code> to handle asynchronous dependency injections.</p>
+<p>Tiny, configurable dependency injection framework. Diapason uses <code>promises</code> to handle asynchronous dependency injections.</p>
 
 <h1>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h1>
 
 <ul>
-<li>Download the <a href="https://github.com/jccazeaux/carburator/releases/download/v0.2.1/carburator.min.js">latest release</a>.</li>
-<li>Clone the repo: <code>git clone https://github.com/jccazeaux/carburator.git</code>.</li>
-<li>Install with npm: <code>npm install carburator</code>.</li>
+<li>Download the <a href="https://github.com/jccazeaux/diapason/releases/download/v0.2.1/diapason.min.js">latest release</a>.</li>
+<li>Clone the repo: <code>git clone https://github.com/jccazeaux/diapason.git</code>.</li>
+<li>Install with npm: <code>npm install diapason</code>.</li>
 </ul>
 
 <h1>
 <a id="how-it-works" class="anchor" href="#how-it-works" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How it works</h1>
 
-<p>Carburator acts as an object container. You can add objets to containers. Then execute function with dependency injection.</p>
+<p>Diapason acts as an object container. You can add objets to containers. Then execute function with dependency injection.</p>
 
 <h2>
 <a id="create-a-container" class="anchor" href="#create-a-container" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Create a container</h2>
 
-<p>Carburator comes with no container, you must create one or more</p>
+<p>Diapason comes with no container, you must create one or more</p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-smi">carburator</span>.<span class="pl-smi">config</span>
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">diapason</span>.<span class="pl-smi">config</span>
     .<span class="pl-en">container</span>(<span class="pl-s"><span class="pl-pds">"</span>myContainer<span class="pl-pds">"</span></span>)
     .<span class="pl-en">container</span>(<span class="pl-s"><span class="pl-pds">"</span>myOtherContainer<span class="pl-pds">"</span></span>);</pre></div>
 
@@ -68,13 +68,13 @@
 
 <p>When creating a container, a function will be created to specifically add objets to that container. The name of the function will be the name of the container</p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-smi">carburator</span>.<span class="pl-en">myContainer</span>(<span class="pl-s"><span class="pl-pds">"</span>myObject<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Hello<span class="pl-pds">"</span></span>)
-<span class="pl-smi">carburator</span>.<span class="pl-en">myOtherContainer</span>(<span class="pl-s"><span class="pl-pds">"</span>myOtherObject<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>World !<span class="pl-pds">"</span></span>)</pre></div>
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">diapason</span>.<span class="pl-en">myContainer</span>(<span class="pl-s"><span class="pl-pds">"</span>myObject<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Hello<span class="pl-pds">"</span></span>)
+<span class="pl-smi">diapason</span>.<span class="pl-en">myOtherContainer</span>(<span class="pl-s"><span class="pl-pds">"</span>myOtherObject<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>World !<span class="pl-pds">"</span></span>)</pre></div>
 
 <h2>
 <a id="dependency-injection" class="anchor" href="#dependency-injection" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dependency injection</h2>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-smi">carburator</span>.<span class="pl-en">inject</span>([<span class="pl-s"><span class="pl-pds">"</span>myObject<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>myOtherObject<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">myObject</span>, <span class="pl-smi">myOtherObject</span>) {
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">diapason</span>.<span class="pl-en">inject</span>([<span class="pl-s"><span class="pl-pds">"</span>myObject<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>myOtherObject<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">myObject</span>, <span class="pl-smi">myOtherObject</span>) {
     <span class="pl-en">console</span>.<span class="pl-c1">log</span>(myObject <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>, <span class="pl-pds">"</span></span> <span class="pl-k">+</span> myOtherObject);
 }]);
 <span class="pl-c">// &gt; Hello, World !</span></pre></div>
@@ -85,17 +85,17 @@
 <h2>
 <a id="what-does-that-mean" class="anchor" href="#what-does-that-mean" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What does that mean</h2>
 
-<p>It means any injection may be a promise. Carburator will wait recursively all dependencies to be be resolved before calling the injection functions.</p>
+<p>It means any injection may be a promise. Diapason will wait recursively all dependencies to be be resolved before calling the injection functions.</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-c">// Create an async dependency</span>
-<span class="pl-smi">carburator</span>.<span class="pl-en">myContainer</span>(<span class="pl-s"><span class="pl-pds">"</span>a<span class="pl-pds">"</span></span>, <span class="pl-smi">Promise</span>.<span class="pl-en">resolve</span>(<span class="pl-s"><span class="pl-pds">"</span>Hello World<span class="pl-pds">"</span></span>));
+<span class="pl-smi">diapason</span>.<span class="pl-en">myContainer</span>(<span class="pl-s"><span class="pl-pds">"</span>a<span class="pl-pds">"</span></span>, <span class="pl-smi">Promise</span>.<span class="pl-en">resolve</span>(<span class="pl-s"><span class="pl-pds">"</span>Hello World<span class="pl-pds">"</span></span>));
 <span class="pl-c">// Create an other async dependency that needs a</span>
-<span class="pl-smi">carburator</span>.<span class="pl-en">myContainer</span>(<span class="pl-s"><span class="pl-pds">"</span>b<span class="pl-pds">"</span></span>, [<span class="pl-s"><span class="pl-pds">"</span>a<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">a</span>) {
+<span class="pl-smi">diapason</span>.<span class="pl-en">myContainer</span>(<span class="pl-s"><span class="pl-pds">"</span>b<span class="pl-pds">"</span></span>, [<span class="pl-s"><span class="pl-pds">"</span>a<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">a</span>) {
     <span class="pl-c">// When injected, will wait for a to be ready</span>
     <span class="pl-k">return</span> <span class="pl-smi">Promise</span>.<span class="pl-en">resolve</span>(a <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span> !<span class="pl-pds">"</span></span>);
 }]);
 <span class="pl-c">// Inject dependency</span>
-<span class="pl-smi">carburator</span>.<span class="pl-en">inject</span>([<span class="pl-s"><span class="pl-pds">"</span>a<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">a</span>) {
+<span class="pl-smi">diapason</span>.<span class="pl-en">inject</span>([<span class="pl-s"><span class="pl-pds">"</span>a<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">a</span>) {
     <span class="pl-c">// Enters here only when injections are ready</span>
     <span class="pl-en">console</span>.<span class="pl-c1">log</span>(a); <span class="pl-c">// Hello World !</span>
 }]);</pre></div>
@@ -103,7 +103,7 @@
 <h2>
 <a id="promises-api" class="anchor" href="#promises-api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Promises API</h2>
 
-<p>Carburator supports 3 Promises frameworks</p>
+<p>Diapason supports 3 Promises frameworks</p>
 
 <ul>
 <li>Ecmascript 2016 (default)</li>
@@ -111,21 +111,21 @@
 <li><a href="http://bluebirdjs.com/">Bluebird</a></li>
 </ul>
 
-<p><strong>Carburator does not include any Promise framework, you must add the one you want (or use ES2016 if your browser supports it)</strong></p>
+<p><strong>Diapason does not include any Promise framework, you must add the one you want (or use ES2016 if your browser supports it)</strong></p>
 
 <h2>
 <a id="switch-promise-framework" class="anchor" href="#switch-promise-framework" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Switch promise framework</h2>
 
-<p>To switch <code>Promise</code> framework in carburator </p>
+<p>To switch <code>Promise</code> framework in diapason </p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-smi">carburator</span>.<span class="pl-smi">config</span>.<span class="pl-en">usePromise</span>(<span class="pl-s"><span class="pl-pds">"</span>ES<span class="pl-pds">"</span></span>);
-<span class="pl-smi">carburator</span>.<span class="pl-smi">config</span>.<span class="pl-en">usePromise</span>(<span class="pl-s"><span class="pl-pds">"</span>Q<span class="pl-pds">"</span></span>);
-<span class="pl-smi">carburator</span>.<span class="pl-smi">config</span>.<span class="pl-en">usePromise</span>(<span class="pl-s"><span class="pl-pds">"</span>bluebird<span class="pl-pds">"</span></span>);</pre></div>
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">diapason</span>.<span class="pl-smi">config</span>.<span class="pl-en">usePromise</span>(<span class="pl-s"><span class="pl-pds">"</span>ES<span class="pl-pds">"</span></span>);
+<span class="pl-smi">diapason</span>.<span class="pl-smi">config</span>.<span class="pl-en">usePromise</span>(<span class="pl-s"><span class="pl-pds">"</span>Q<span class="pl-pds">"</span></span>);
+<span class="pl-smi">diapason</span>.<span class="pl-smi">config</span>.<span class="pl-en">usePromise</span>(<span class="pl-s"><span class="pl-pds">"</span>bluebird<span class="pl-pds">"</span></span>);</pre></div>
 
 <h2>
 <a id="configure-an-other-promise-framework" class="anchor" href="#configure-an-other-promise-framework" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configure an other promise framework</h2>
 
-<p>Carburator can be adapted to work on any other <code>Promise</code> framework. To add a new one use <code>config.promiseAdapter</code> function. This function must return an object to define 4 elements</p>
+<p>Diapason can be adapted to work on any other <code>Promise</code> framework. To add a new one use <code>config.promiseAdapter</code> function. This function must return an object to define 4 elements</p>
 
 <ul>
 <li>
@@ -138,9 +138,9 @@
 <code>thenAlias</code>: Alias for <code>then</code> function</li>
 </ul>
 
-<p>As examples, <code>Q</code> and <code>bluebird</code> adapters are defined like this in carburator</p>
+<p>As examples, <code>Q</code> and <code>bluebird</code> adapters are defined like this in diapason</p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-smi">carburator</span>.<span class="pl-smi">config</span>.<span class="pl-en">promiseAdapter</span>(<span class="pl-s"><span class="pl-pds">"</span>Q<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>() {
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">diapason</span>.<span class="pl-smi">config</span>.<span class="pl-en">promiseAdapter</span>(<span class="pl-s"><span class="pl-pds">"</span>Q<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>() {
     <span class="pl-k">return</span> {
         resolve<span class="pl-k">:</span> Q,
         <span class="pl-en">reject</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">value</span>) {
@@ -154,7 +154,7 @@
         thenAlias<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>then<span class="pl-pds">"</span></span>
     };
 });
-<span class="pl-smi">carburator</span>.<span class="pl-smi">config</span>.<span class="pl-en">promiseAdapter</span>(<span class="pl-s"><span class="pl-pds">"</span>bluebird<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>() {
+<span class="pl-smi">diapason</span>.<span class="pl-smi">config</span>.<span class="pl-en">promiseAdapter</span>(<span class="pl-s"><span class="pl-pds">"</span>bluebird<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>() {
     <span class="pl-k">return</span> {
         <span class="pl-en">resolve</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">value</span>) {
             <span class="pl-k">return</span> <span class="pl-smi">Promise</span>.<span class="pl-en">resolve</span>(value)
@@ -178,13 +178,13 @@
 <p>By default, objects will be treated as singleton. You can declare them as protorypes using this method. This concerns only function() to determine if they will be reexecuted.</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-c">// Declare as singleton (by default)</span>
-<span class="pl-smi">carburator</span>.<span class="pl-en">myContainer</span>(<span class="pl-s"><span class="pl-pds">"</span>myObject<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>() {
+<span class="pl-smi">diapason</span>.<span class="pl-en">myContainer</span>(<span class="pl-s"><span class="pl-pds">"</span>myObject<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>() {
     <span class="pl-k">return</span> {
         message<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Hello, World !<span class="pl-pds">"</span></span>;
     };
 }).<span class="pl-en">asSingleton</span>();
 <span class="pl-c">// Declare as prototype</span>
-<span class="pl-smi">carburator</span>.<span class="pl-en">myContainer</span>(<span class="pl-s"><span class="pl-pds">"</span>myObject<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>() {
+<span class="pl-smi">diapason</span>.<span class="pl-en">myContainer</span>(<span class="pl-s"><span class="pl-pds">"</span>myObject<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>() {
     <span class="pl-k">return</span> {
         message<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Hello, World !<span class="pl-pds">"</span></span>;
     };
@@ -195,8 +195,8 @@
 
 <p>You can choose the container wich will contain your object in the name of the injection</p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-c">// carburator will search only in myContainer for myObject.</span>
-<span class="pl-smi">carburator</span>.<span class="pl-en">inject</span>([<span class="pl-s"><span class="pl-pds">"</span>myContainer:myObject<span class="pl-pds">"</span></span>], <span class="pl-k">function</span>(<span class="pl-smi">myObject</span>) {
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// diapason will search only in myContainer for myObject.</span>
+<span class="pl-smi">diapason</span>.<span class="pl-en">inject</span>([<span class="pl-s"><span class="pl-pds">"</span>myContainer:myObject<span class="pl-pds">"</span></span>], <span class="pl-k">function</span>(<span class="pl-smi">myObject</span>) {
     <span class="pl-en">console</span>.<span class="pl-c1">log</span>(myObject);
 });</pre></div>
 
@@ -209,16 +209,16 @@
 
 <p>Exemple: get the functions without executing them</p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-smi">carburator</span>.<span class="pl-smi">config</span>
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">diapason</span>.<span class="pl-smi">config</span>
     .<span class="pl-en">container</span>(<span class="pl-s"><span class="pl-pds">"</span>functions<span class="pl-pds">"</span></span>)
     .<span class="pl-en">executor</span>(<span class="pl-s"><span class="pl-pds">"</span>functions<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">obj</span>) {
         <span class="pl-k">return</span> obj;
     });
 
-<span class="pl-smi">carburator</span>.<span class="pl-en">function</span>(<span class="pl-s"><span class="pl-pds">"</span>myFunction<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>() {
+<span class="pl-smi">diapason</span>.<span class="pl-en">function</span>(<span class="pl-s"><span class="pl-pds">"</span>myFunction<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>() {
     <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>Hello, World !<span class="pl-pds">"</span></span>);
 });
-<span class="pl-smi">carburator</span>.<span class="pl-en">inject</span>([<span class="pl-s"><span class="pl-pds">"</span>myFunction<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">myFunction</span>) {
+<span class="pl-smi">diapason</span>.<span class="pl-en">inject</span>([<span class="pl-s"><span class="pl-pds">"</span>myFunction<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">myFunction</span>) {
     <span class="pl-en">myFunction</span>();
 }]);</pre></div>
 
@@ -228,9 +228,9 @@
 <p>You can reset a container, wich means the container will no longer be available.</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-c">// Reset a container</span>
-<span class="pl-smi">carburator</span>.<span class="pl-c1">reset</span>(<span class="pl-s"><span class="pl-pds">"</span>myContainer<span class="pl-pds">"</span></span>);
+<span class="pl-smi">diapason</span>.<span class="pl-c1">reset</span>(<span class="pl-s"><span class="pl-pds">"</span>myContainer<span class="pl-pds">"</span></span>);
 <span class="pl-c">// Reset all</span>
-<span class="pl-smi">carburator</span>.<span class="pl-c1">reset</span>();</pre></div>
+<span class="pl-smi">diapason</span>.<span class="pl-c1">reset</span>();</pre></div>
 
 <h2>
 <a id="clear" class="anchor" href="#clear" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Clear</h2>
@@ -238,16 +238,16 @@
 <p>You can clear a container, wich means all objects in it will be deleted. The container will still be available.</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-c">// Clear a container</span>
-<span class="pl-smi">carburator</span>.<span class="pl-c1">clear</span>(<span class="pl-s"><span class="pl-pds">"</span>myContainer<span class="pl-pds">"</span></span>);
+<span class="pl-smi">diapason</span>.<span class="pl-c1">clear</span>(<span class="pl-s"><span class="pl-pds">"</span>myContainer<span class="pl-pds">"</span></span>);
 <span class="pl-c">// Clear all containers</span>
-<span class="pl-smi">carburator</span>.<span class="pl-c1">clear</span>();</pre></div>
+<span class="pl-smi">diapason</span>.<span class="pl-c1">clear</span>();</pre></div>
 
 <h2>
 <a id="define-execution-context-this" class="anchor" href="#define-execution-context-this" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Define execution context (this)</h2>
 
 <p>The injection function will be executed by default on null. You can specify a specific context with the second argument of the inject function</p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-smi">carburator</span>.<span class="pl-en">inject</span>([<span class="pl-s"><span class="pl-pds">"</span>myObject<span class="pl-pds">"</span></span>], <span class="pl-k">function</span>(<span class="pl-smi">myObject</span>) {
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">diapason</span>.<span class="pl-en">inject</span>([<span class="pl-s"><span class="pl-pds">"</span>myObject<span class="pl-pds">"</span></span>], <span class="pl-k">function</span>(<span class="pl-smi">myObject</span>) {
     <span class="pl-en">console</span>.<span class="pl-c1">log</span>(myObject);
 }, <span class="pl-c1">window</span>);</pre></div>
 
@@ -256,16 +256,16 @@
 
 <p>For some injections, you may want to add contextual dependencies. This dependencies cannot be added to a container because they must be available only for this execution. These contextual dependencies can be passed as third argument of inject function</p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-smi">carburator</span>.<span class="pl-en">inject</span>([<span class="pl-s"><span class="pl-pds">"</span>myObject<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>$scope<span class="pl-pds">"</span></span>], <span class="pl-k">function</span>(<span class="pl-smi">myObject</span>, <span class="pl-smi">$scope</span>) {
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">diapason</span>.<span class="pl-en">inject</span>([<span class="pl-s"><span class="pl-pds">"</span>myObject<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>$scope<span class="pl-pds">"</span></span>], <span class="pl-k">function</span>(<span class="pl-smi">myObject</span>, <span class="pl-smi">$scope</span>) {
     <span class="pl-en">console</span>.<span class="pl-c1">log</span>(myObject);
 }, <span class="pl-c1">window</span>, {$scope<span class="pl-k">:</span> {id<span class="pl-k">:</span> <span class="pl-c1">0</span>}});</pre></div>
 
 <h2>
 <a id="ignore-containers" class="anchor" href="#ignore-containers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ignore containers</h2>
 
-<p>You can tell carburator to ignore containers on an injection with fourth parameter. This parameter is an array of ignored container names.</p>
+<p>You can tell diapason to ignore containers on an injection with fourth parameter. This parameter is an array of ignored container names.</p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-smi">carburator</span>.<span class="pl-en">inject</span>([<span class="pl-s"><span class="pl-pds">"</span>myObject<span class="pl-pds">"</span></span>], <span class="pl-k">function</span>(<span class="pl-smi">myObject</span>) {
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">diapason</span>.<span class="pl-en">inject</span>([<span class="pl-s"><span class="pl-pds">"</span>myObject<span class="pl-pds">"</span></span>], <span class="pl-k">function</span>(<span class="pl-smi">myObject</span>) {
     <span class="pl-en">console</span>.<span class="pl-c1">log</span>(myObject);
 }, <span class="pl-c1">window</span>, <span class="pl-c1">null</span>, [<span class="pl-s"><span class="pl-pds">"</span>myContainer<span class="pl-pds">"</span></span>]);</pre></div>
 
@@ -284,21 +284,21 @@
 
 <p>Here is an exemple of usage. We want to have configurable services. The configuration of the service must be stored in a specific container and injected as $configuration for the service.</p>
 
-<div class="highlight highlight-source-js"><pre>    <span class="pl-smi">carburator</span>.<span class="pl-smi">config</span>
+<div class="highlight highlight-source-js"><pre>    <span class="pl-smi">diapason</span>.<span class="pl-smi">config</span>
         .<span class="pl-en">container</span>(<span class="pl-s"><span class="pl-pds">"</span>configuration<span class="pl-pds">"</span></span>)
         .<span class="pl-en">container</span>(<span class="pl-s"><span class="pl-pds">"</span>service<span class="pl-pds">"</span></span>);
     <span class="pl-c">// For the service container, we add a $configuration automatic dependency</span>
     <span class="pl-c">// This $configuration dependency will be the &amp;lt;serviceName&amp;gt; dependency in the configuration container</span>
-    <span class="pl-smi">carburator</span>.<span class="pl-smi">config</span>.<span class="pl-en">automaticDependencies</span>(<span class="pl-s"><span class="pl-pds">"</span>service<span class="pl-pds">"</span></span>, {<span class="pl-s"><span class="pl-pds">"</span><span class="pl-en">$configuration</span><span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">name</span>) {
+    <span class="pl-smi">diapason</span>.<span class="pl-smi">config</span>.<span class="pl-en">automaticDependencies</span>(<span class="pl-s"><span class="pl-pds">"</span>service<span class="pl-pds">"</span></span>, {<span class="pl-s"><span class="pl-pds">"</span><span class="pl-en">$configuration</span><span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">name</span>) {
         <span class="pl-c">// We get the service configuration in the configuration container (ignore service container)</span>
-        <span class="pl-k">return</span> <span class="pl-smi">carburator</span>.<span class="pl-en">inject</span>([name, <span class="pl-k">function</span>(<span class="pl-smi">config</span>) {
+        <span class="pl-k">return</span> <span class="pl-smi">diapason</span>.<span class="pl-en">inject</span>([name, <span class="pl-k">function</span>(<span class="pl-smi">config</span>) {
             <span class="pl-k">return</span> config;
         }], <span class="pl-c1">null</span>, <span class="pl-c1">null</span>, [<span class="pl-s"><span class="pl-pds">"</span>service<span class="pl-pds">"</span></span>]);
     }});
     <span class="pl-c">// We define the configuration</span>
-    <span class="pl-smi">carburator</span>.<span class="pl-en">configuration</span>(<span class="pl-s"><span class="pl-pds">"</span>myService<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>myService configuration is here<span class="pl-pds">"</span></span>);
+    <span class="pl-smi">diapason</span>.<span class="pl-en">configuration</span>(<span class="pl-s"><span class="pl-pds">"</span>myService<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>myService configuration is here<span class="pl-pds">"</span></span>);
     <span class="pl-c">// Then the service will receive the configuration as $configuration</span>
-    <span class="pl-smi">carburator</span>.<span class="pl-en">service</span>(<span class="pl-s"><span class="pl-pds">"</span>myService<span class="pl-pds">"</span></span>, [<span class="pl-s"><span class="pl-pds">"</span>$configuration<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$configuration</span>) {
+    <span class="pl-smi">diapason</span>.<span class="pl-en">service</span>(<span class="pl-s"><span class="pl-pds">"</span>myService<span class="pl-pds">"</span></span>, [<span class="pl-s"><span class="pl-pds">"</span>$configuration<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$configuration</span>) {
         <span class="pl-en">console</span>.<span class="pl-c1">log</span>($configuration); <span class="pl-c">// "myService configuration is here"</span>
     }]);
 </pre></div>
